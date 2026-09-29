@@ -137,35 +137,6 @@
             margin: 20px 0;
         }
 
-        /* GALERÍA HORIZONTAL */
-        .gallery-wrapper {
-            width: 100vw;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            display: flex;
-            padding: 20px;
-            gap: 20px;
-            -webkit-overflow-scrolling: touch;
-        }
-        .gallery-wrapper::-webkit-scrollbar { display: none; }
-        .gallery-item {
-            scroll-snap-align: center;
-            min-width: 250px;
-            height: 350px;
-            background: var(--card-bg);
-            border-radius: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            position: relative;
-            overflow: hidden;
-        }
-        .gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
 
         /* TARJETAS VOLTEABLES */
         .reasons-grid {
@@ -289,49 +260,6 @@
             100% { transform: scale(1); }
         }
 
-        /* LÍNEA DE TIEMPO */
-        .timeline {
-            position: relative;
-            max-width: 400px;
-            margin: 0 auto;
-            padding: 20px 0;
-        }
-        .timeline::after {
-            content: '';
-            position: absolute;
-            width: 4px;
-            background-color: var(--primary);
-            top: 0;
-            bottom: 0;
-            left: 20px;
-            border-radius: 2px;
-        }
-        .timeline-item {
-            padding: 10px 20px 10px 50px;
-            position: relative;
-            background-color: inherit;
-            width: 100%;
-        }
-        .timeline-item::after {
-            content: '';
-            position: absolute;
-            width: 16px;
-            height: 16px;
-            right: auto;
-            left: 14px;
-            background-color: white;
-            border: 4px solid var(--secondary);
-            top: 15px;
-            border-radius: 50%;
-            z-index: 1;
-        }
-        .timeline-content {
-            padding: 15px;
-            background-color: var(--card-bg);
-            position: relative;
-            border-radius: 15px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-        }
 
         /* FONDO ANIMADO */
         #background-canvas {
@@ -403,13 +331,6 @@
             <div id="typewriter-text" style="margin-top: 40px; color: var(--text-main);"></div>
         </section>
 
-        <!-- SECCIÓN 2: LÍNEA DE TIEMPO -->
-        <section style="background-color: rgba(255, 255, 255, 0.4);">
-            <h2 class="cursive" style="font-size: 2rem; color: var(--secondary); margin-bottom: 30px;">Nuestra Historia</h2>
-            <div class="timeline" id="timeline-container">
-                <!-- Se llena por JS -->
-            </div>
-        </section>
 
         <!-- SECCIÓN 3: RAZONES -->
         <section>
@@ -420,13 +341,6 @@
             </div>
         </section>
 
-        <!-- SECCIÓN 4: GALERÍA -->
-        <section style="background-color: rgba(255, 255, 255, 0.4); padding-left: 0; padding-right: 0;">
-            <h2 class="cursive" style="font-size: 2rem; color: var(--secondary); margin-bottom: 30px; text-align: center;">Momentos Especiales</h2>
-            <div class="gallery-wrapper" id="gallery-container">
-                <!-- Se llena por JS -->
-            </div>
-        </section>
 
         <!-- SECCIÓN 5: DESBLOQUEABLES -->
         <section>
@@ -461,33 +375,18 @@
             
             // Textos para la máquina de escribir
             typewriterTexts: [
-                "Ya casi es el gran día...",
-                "Estoy preparando algo especial...",
-                "Me encanta verte sonreír.",
-                "Cuenta los segundos..."
-            ],
-
-            // Línea de tiempo
-            timeline: [
-                { date: "Enero 2023", text: "El día que nos conocimos." },
-                { date: "Marzo 2024", text: "Ese viaje inolvidable a la playa." },
-                { date: "Diciembre 2024", text: "Nuestra primera Navidad." },
-                { date: "Hoy", text: "Esperando celebrar otro año más contigo." }
+                "Compilando sorpresas...",
+                "Resolviendo dependencias del corazón...",
+                "Desplegando amor en producción...",
+                "Ejecutando script de cumpleaños..."
             ],
 
             // Razones (Tarjetas)
             reasons: [
-                "Por tu hermosa sonrisa.",
-                "Porque siempre sabes escuchar.",
-                "Por cómo iluminas cualquier lugar.",
-                "Por ser incondicional."
-            ],
-
-            // Galería de fotos (URLs) - Reemplaza con tus fotos (ej. ./fotos/foto1.jpg)
-            photos: [
-                "https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=400&q=80",
-                "https://images.unsplash.com/photo-1511895426328-dc8714191300?w=400&q=80",
-                "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=400&q=80"
+                "Porque tu código siempre compila a la primera en mi corazón.",
+                "Eres la mejor System Admin de mi vida.",
+                "Contigo no hay bugs, solo features maravillosas.",
+                "Porque eres la única con acceso root a mi vida."
             ],
 
             // Desbloqueables diarios
@@ -566,9 +465,7 @@
 
         // 3. Inicializar Componentes
         function initApp() {
-            renderTimeline();
             renderReasons();
-            renderGallery();
             startTypewriter();
             updateCountdown();
             setInterval(updateCountdown, 1000);
@@ -623,21 +520,6 @@
             }
         }
 
-        // 6. Renderizar Timeline
-        function renderTimeline() {
-            const container = document.getElementById('timeline-container');
-            CONFIG.timeline.forEach(item => {
-                const div = document.createElement('div');
-                div.className = 'timeline-item';
-                div.innerHTML = `
-                    <div class="timeline-content">
-                        <strong style="color: var(--secondary); display: block; margin-bottom: 5px;">${item.date}</strong>
-                        <p>${item.text}</p>
-                    </div>
-                `;
-                container.appendChild(div);
-            });
-        }
 
         // 7. Renderizar Razones (Flip Cards)
         function renderReasons() {
@@ -663,16 +545,6 @@
             });
         }
 
-        // 8. Renderizar Galería
-        function renderGallery() {
-            const container = document.getElementById('gallery-container');
-            CONFIG.photos.forEach(photoUrl => {
-                const div = document.createElement('div');
-                div.className = 'gallery-item';
-                div.innerHTML = `<img src="${photoUrl}" alt="Momento especial" loading="lazy">`;
-                container.appendChild(div);
-            });
-        }
 
         // 9. Desbloqueables
         function updateUnlocks(daysLeft) {
