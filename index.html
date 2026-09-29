@@ -9,17 +9,27 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Pacifico&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- AOS Animation CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
     <style>
-        /* CONFIGURACIÓN DE ESTILOS - TEMA: CUTE Y PASTEL */
+        /* ============================================
+           TEMA: CUTE Y PASTEL — PREMIUM EDITION
+           ============================================ */
         :root {
             --bg-color: #fff0f5;
             --primary: #ffb6c1;
             --secondary: #ff69b4;
+            --accent: #ff1493;
+            --gold: #ffd700;
             --text-main: #5c4044;
             --text-light: #ffffff;
-            --card-bg: rgba(255, 255, 255, 0.8);
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --glass: rgba(255, 255, 255, 0.25);
             --safe-top: env(safe-area-inset-top);
             --safe-bottom: env(safe-area-inset-bottom);
         }
@@ -45,11 +55,17 @@
             font-weight: normal;
         }
 
-        /* PANTALLA DE BIENVENIDA */
+        .dancing {
+            font-family: 'Dancing Script', cursive;
+        }
+
+        /* ============================================
+           PANTALLA DE BIENVENIDA — GLASSMORPHISM
+           ============================================ */
         #welcome-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100dvh;
-            background: linear-gradient(135deg, #ffb6c1, #ffc0cb);
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 50%, #ffc3a0 100%);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -57,41 +73,76 @@
             z-index: 100;
             transition: opacity 0.8s ease, transform 0.8s ease;
         }
-        
+
+        .welcome-emoji {
+            font-size: 5rem;
+            animation: bounce 2s infinite;
+            margin-bottom: 1rem;
+        }
+
         #welcome-screen h1 {
             color: var(--text-light);
             font-size: 2.5rem;
             text-align: center;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.15);
+        }
+
+        .welcome-sub {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.1rem;
+            text-align: center;
+            padding: 0 30px;
             margin-bottom: 2rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            line-height: 1.6;
         }
 
         .btn-large {
-            background-color: var(--text-light);
-            color: var(--secondary);
+            background: rgba(255,255,255,0.95);
+            color: var(--accent);
             border: none;
-            border-radius: 30px;
-            padding: 15px 40px;
+            border-radius: 50px;
+            padding: 18px 50px;
             font-size: 1.2rem;
-            font-weight: 600;
+            font-weight: 700;
             font-family: 'Fredoka', sans-serif;
-            box-shadow: 0 4px 15px rgba(255, 105, 180, 0.3);
+            box-shadow: 0 8px 32px rgba(255, 20, 147, 0.3);
             cursor: pointer;
-            transition: transform 0.2s ease;
-            min-height: 48px; /* Touch target size */
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            min-height: 48px;
             min-width: 48px;
+            position: relative;
+            overflow: hidden;
         }
-        
+
+        .btn-large::after {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 0; height: 0;
+            background: rgba(255, 105, 180, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
         .btn-large:active {
             transform: scale(0.95);
         }
 
-        /* CONTENEDOR PRINCIPAL */
+        .btn-large:active::after {
+            width: 300px;
+            height: 300px;
+        }
+
+        /* ============================================
+           CONTENEDOR PRINCIPAL
+           ============================================ */
         #main-content {
             display: none;
             opacity: 0;
             transition: opacity 1s ease;
-            padding-bottom: calc(80px + var(--safe-bottom));
+            padding-bottom: calc(100px + var(--safe-bottom));
         }
 
         section {
@@ -104,52 +155,177 @@
             position: relative;
         }
 
-        /* CUENTA REGRESIVA */
+        .section-divider {
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 2px;
+            margin: 15px auto 25px;
+        }
+
+        /* ============================================
+           CUENTA REGRESIVA — GLASSMORPHISM CARDS
+           ============================================ */
         .countdown-container {
             display: flex;
-            gap: 15px;
-            margin-top: 20px;
+            gap: 12px;
+            margin-top: 25px;
         }
         .time-box {
             background: var(--card-bg);
-            border-radius: 15px;
-            padding: 15px;
-            min-width: 70px;
+            border-radius: 20px;
+            padding: 18px 12px;
+            min-width: 72px;
             text-align: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            backdrop-filter: blur(5px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.5);
+            transition: transform 0.3s ease;
+        }
+        .time-box:active {
+            transform: scale(0.95);
         }
         .time-num {
-            font-size: 2rem;
-            font-weight: 600;
-            color: var(--secondary);
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         .time-label {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 4px;
+            color: var(--text-main);
+            opacity: 0.7;
         }
 
-        /* MÁQUINA DE ESCRIBIR */
+        /* ============================================
+           MÁQUINA DE ESCRIBIR
+           ============================================ */
         #typewriter-text {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             text-align: center;
             min-height: 80px;
-            margin: 20px 0;
+            margin: 25px 0;
+            padding: 0 10px;
         }
 
+        #typewriter-text::after {
+            content: '|';
+            animation: blink 0.7s infinite;
+            color: var(--accent);
+        }
 
-        /* TARJETAS VOLTEABLES */
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* ============================================
+           SECCIÓN: CARTA / DEDICATORIA
+           ============================================ */
+        .letter-card {
+            background: white;
+            border-radius: 24px;
+            padding: 35px 25px;
+            max-width: 380px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(255, 105, 180, 0.15);
+            position: relative;
+            border: 1px solid rgba(255, 182, 193, 0.3);
+        }
+
+        .letter-card::before {
+            content: '💌';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2.5rem;
+        }
+
+        .letter-text {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--text-main);
+            text-align: left;
+        }
+
+        .letter-signature {
+            text-align: right;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.5rem;
+            color: var(--accent);
+            margin-top: 20px;
+        }
+
+        /* ============================================
+           SECCIÓN: CUALIDADES EMOJI
+           ============================================ */
+        .qualities-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            max-width: 380px;
+            width: 100%;
+        }
+
+        .quality-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 20px 15px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .quality-card:active {
+            transform: scale(0.95);
+        }
+
+        .quality-emoji {
+            font-size: 2.5rem;
+            display: block;
+            margin-bottom: 10px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .quality-card:nth-child(2) .quality-emoji { animation-delay: 0.5s; }
+        .quality-card:nth-child(3) .quality-emoji { animation-delay: 1s; }
+        .quality-card:nth-child(4) .quality-emoji { animation-delay: 1.5s; }
+        .quality-card:nth-child(5) .quality-emoji { animation-delay: 2s; }
+        .quality-card:nth-child(6) .quality-emoji { animation-delay: 2.5s; }
+
+        .quality-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        /* ============================================
+           TARJETAS VOLTEABLES — MEJORADAS
+           ============================================ */
         .reasons-grid {
             display: grid;
             grid-template-columns: 1fr;
             gap: 20px;
             width: 100%;
-            max-width: 400px;
+            max-width: 380px;
         }
         .flip-card {
             background-color: transparent;
             width: 100%;
-            height: 120px;
+            height: 130px;
             perspective: 1000px;
             cursor: pointer;
         }
@@ -158,7 +334,7 @@
             width: 100%;
             height: 100%;
             text-align: center;
-            transition: transform 0.6s;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
             transform-style: preserve-3d;
         }
         .flip-card.flipped .flip-card-inner {
@@ -169,64 +345,148 @@
             width: 100%;
             height: 100%;
             backface-visibility: hidden;
-            border-radius: 15px;
+            border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 15px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            padding: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
         }
         .flip-card-front {
-            background-color: var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: var(--text-light);
             font-size: 1.2rem;
         }
+        .flip-card-front i {
+            margin-right: 10px;
+            font-size: 1.5rem;
+        }
         .flip-card-back {
-            background-color: var(--card-bg);
+            background: white;
             color: var(--text-main);
             transform: rotateY(180deg);
+            border: 2px solid var(--primary);
+            font-size: 1rem;
+            line-height: 1.5;
         }
 
-        /* ELEMENTOS DESBLOQUEABLES */
-        .unlock-grid {
+        /* ============================================
+           SECCIÓN: MENSAJE GRANDE CON GLOW
+           ============================================ */
+        .big-message {
+            font-family: 'Pacifico', cursive;
+            font-size: 2.8rem;
+            text-align: center;
+            background: linear-gradient(135deg, var(--secondary), var(--accent), #ff6b9d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: glow 3s ease-in-out infinite alternate;
+            line-height: 1.4;
+            padding: 0 10px;
+        }
+
+        .big-message-sub {
+            font-size: 1.1rem;
+            color: var(--text-main);
+            text-align: center;
+            margin-top: 15px;
+            opacity: 0.8;
+        }
+
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 10px rgba(255, 105, 180, 0.3)); }
+            to { filter: drop-shadow(0 0 25px rgba(255, 20, 147, 0.5)); }
+        }
+
+        /* ============================================
+           SECCIÓN: DESEOS FLOTANTES
+           ============================================ */
+        .wishes-container {
             display: flex;
             flex-direction: column;
             gap: 15px;
+            max-width: 380px;
             width: 100%;
         }
-        .unlock-item {
-            background: var(--card-bg);
-            padding: 15px;
-            border-radius: 15px;
-            text-align: center;
-            opacity: 0.5;
-            position: relative;
-        }
-        .unlock-item.unlocked {
-            opacity: 1;
+
+        .wish-bubble {
             background: white;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            border-radius: 20px;
+            padding: 18px 22px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+            position: relative;
+            font-size: 1rem;
+            line-height: 1.5;
+            border-left: 4px solid var(--secondary);
+            transition: transform 0.3s ease;
         }
 
-        /* REPRODUCTOR FLOTANTE */
+        .wish-bubble:active {
+            transform: scale(0.97);
+        }
+
+        .wish-bubble .wish-icon {
+            position: absolute;
+            top: -12px;
+            right: 15px;
+            font-size: 1.5rem;
+            background: white;
+            padding: 0 5px;
+        }
+
+        /* ============================================
+           SECCIÓN: PROMESAS
+           ============================================ */
+        .promises-list {
+            list-style: none;
+            max-width: 380px;
+            width: 100%;
+        }
+
+        .promises-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 18px 0;
+            border-bottom: 1px solid rgba(255, 182, 193, 0.3);
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .promises-list li:last-child {
+            border-bottom: none;
+        }
+
+        .promise-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        /* ============================================
+           REPRODUCTOR FLOTANTE — MEJORADO
+           ============================================ */
         #music-player {
             position: fixed;
             bottom: calc(20px + var(--safe-bottom));
             right: 20px;
-            background: white;
-            border-radius: 30px;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(15px);
+            border-radius: 50px;
             padding: 10px 20px;
             display: flex;
             align-items: center;
-            gap: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            gap: 12px;
+            box-shadow: 0 8px 32px rgba(255, 105, 180, 0.2);
             z-index: 50;
+            border: 1px solid rgba(255,182,193,0.3);
         }
         .music-btn {
             background: none;
             border: none;
             font-size: 1.5rem;
-            color: var(--secondary);
+            color: var(--accent);
             min-width: 48px;
             min-height: 48px;
             display: flex;
@@ -234,12 +494,14 @@
             align-items: center;
         }
 
-        /* PANTALLA DE CELEBRACIÓN */
+        /* ============================================
+           PANTALLA DE CELEBRACIÓN
+           ============================================ */
         #celebration-screen {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100dvh;
-            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #ffc3a0 100%);
             z-index: 200;
             flex-direction: column;
             justify-content: center;
@@ -248,28 +510,87 @@
             text-align: center;
         }
         #celebration-screen h1 {
-            font-size: 4rem;
+            font-size: 3.5rem;
             color: white;
-            text-shadow: 0 0 20px rgba(255,255,255,0.8);
-            animation: pulse 2s infinite;
+            text-shadow: 0 0 30px rgba(255,255,255,0.6);
+            animation: celebPulse 2s infinite;
         }
 
-        @keyframes pulse {
+        @keyframes celebPulse {
             0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+            50% { transform: scale(1.08); }
             100% { transform: scale(1); }
         }
 
+        /* ============================================
+           EMOJIS FLOTANTES DE FONDO
+           ============================================ */
+        .floating-emoji {
+            position: fixed;
+            font-size: 1.8rem;
+            opacity: 0;
+            z-index: -1;
+            pointer-events: none;
+            animation: emojiRise 8s linear infinite;
+        }
 
-        /* FONDO ANIMADO */
+        @keyframes emojiRise {
+            0% {
+                opacity: 0;
+                transform: translateY(100vh) rotate(0deg);
+            }
+            10% { opacity: 0.7; }
+            90% { opacity: 0.7; }
+            100% {
+                opacity: 0;
+                transform: translateY(-20vh) rotate(360deg);
+            }
+        }
+
+        /* ============================================
+           FONDO ANIMADO
+           ============================================ */
         #background-canvas {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1;
+            z-index: -2;
             pointer-events: none;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-20px); }
+            60% { transform: translateY(-10px); }
+        }
+
+        /* ============================================
+           SCROLL INDICATOR
+           ============================================ */
+        .scroll-hint {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            animation: scrollBounce 2s infinite;
+            opacity: 0.6;
+        }
+
+        .scroll-hint span {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        @keyframes scrollBounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(8px); }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -284,22 +605,27 @@
 
     <!-- PANTALLA DE BIENVENIDA -->
     <div id="welcome-screen">
+        <div class="welcome-emoji">🎂</div>
         <h1>¡Hola, Vivian!</h1>
-        <p style="margin-bottom: 30px; color: white; font-size: 1.1rem; text-align: center; padding: 0 20px;">Tengo una sorpresa preparada para ti...</p>
-        <button class="btn-large" id="btn-start" aria-label="Abrir sorpresa">Toca para abrir</button>
+        <p class="welcome-sub">Alguien preparó algo especial para ti...<br>¿Lista para verlo?</p>
+        <button class="btn-large" id="btn-start" aria-label="Abrir sorpresa">
+            <i class="bi bi-gift-fill"></i> Abrir mi sorpresa
+        </button>
     </div>
 
     <!-- FONDO ANIMADO -->
     <canvas id="background-canvas"></canvas>
 
+    <!-- EMOJIS FLOTANTES (se crean por JS) -->
+    <div id="floating-emojis-container"></div>
+
     <!-- REPRODUCTOR DE MÚSICA -->
     <div id="music-player" style="display: none;">
         <button class="music-btn" id="btn-play" aria-label="Reproducir música">🎵</button>
-        <span style="font-size: 0.9rem; font-weight: 600;" id="track-name">Cargando...</span>
+        <span style="font-size: 0.85rem; font-weight: 600;" id="track-name">Cargando...</span>
     </div>
 
     <!-- AUDIO ELEMENT -->
-    <!-- Reemplaza el src con la URL de tu canción -->
     <audio id="bg-audio" loop>
         <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
     </audio>
@@ -309,8 +635,9 @@
         
         <!-- SECCIÓN 1: CUENTA REGRESIVA -->
         <section id="sec-countdown">
-            <h2 class="cursive" style="font-size: 2.5rem; color: var(--secondary);">Faltan...</h2>
-            <div class="countdown-container">
+            <h2 class="cursive" data-aos="fade-down" style="font-size: 2.5rem; color: var(--secondary);">Faltan...</h2>
+            <div class="section-divider" data-aos="fade-up" data-aos-delay="100"></div>
+            <div class="countdown-container" data-aos="zoom-in" data-aos-delay="200">
                 <div class="time-box">
                     <div class="time-num" id="cd-days">00</div>
                     <div class="time-label">Días</div>
@@ -328,26 +655,152 @@
                     <div class="time-label">Seg</div>
                 </div>
             </div>
-            <div id="typewriter-text" style="margin-top: 40px; color: var(--text-main);"></div>
+            <div id="typewriter-text" data-aos="fade-up" data-aos-delay="400" style="margin-top: 40px; color: var(--text-main);"></div>
+            <div class="scroll-hint">
+                <span>Desliza</span>
+                <i class="bi bi-chevron-double-down"></i>
+            </div>
         </section>
 
 
-        <!-- SECCIÓN 3: RAZONES -->
+        <!-- SECCIÓN 2: MENSAJE GRANDE "TE QUIERO MUGROSITA" -->
         <section>
-            <h2 class="cursive" style="font-size: 2rem; color: var(--secondary); margin-bottom: 30px; text-align: center;">Razones por las que te quiero</h2>
-            <p style="text-align: center; margin-bottom: 20px; font-size: 0.9rem;">(Toca las tarjetas para voltearlas)</p>
+            <div data-aos="zoom-in" data-aos-duration="1200">
+                <p class="big-message">Te quiero<br>mugrosita 🫂💞</p>
+                <p class="big-message-sub">...y lo sabes.</p>
+            </div>
+        </section>
+
+
+        <!-- SECCIÓN 3: CARTA DEDICATORIA -->
+        <section>
+            <h2 class="cursive" data-aos="fade-down" style="font-size: 2rem; color: var(--secondary); margin-bottom: 10px;">Una carta para ti</h2>
+            <div class="section-divider" data-aos="fade-up" data-aos-delay="100"></div>
+            <div class="letter-card" data-aos="fade-up" data-aos-delay="200">
+                <p class="letter-text">
+                    Vivian, hoy quiero que sepas lo increíble que eres. No solo como ingeniera de sistemas (que ya sabemos que eres crack 💻), sino como persona.
+                    <br><br>
+                    Gracias por las risas, por las videollamadas debuggeando código a las 10pm, por aguantar mis chistes malos y por ser esa amiga que siempre está ahí sin importar la hora ni la distancia.
+                    <br><br>
+                    Este nuevo año de vida te traiga todo lo que mereces: éxito en la U, salud, muchas alegrías y que por fin domines el inglés 😜.
+                    <br><br>
+                    ¡Te quiero mugrosita! 🫂💞
+                </p>
+                <p class="letter-signature">— Tu pinche panda 🐼</p>
+            </div>
+        </section>
+
+
+        <!-- SECCIÓN 4: LO QUE TE HACE ESPECIAL -->
+        <section>
+            <h2 class="cursive" data-aos="fade-down" style="font-size: 2rem; color: var(--secondary); margin-bottom: 10px;">Lo que te hace especial</h2>
+            <div class="section-divider" data-aos="fade-up" data-aos-delay="100"></div>
+            <div class="qualities-grid">
+                <div class="quality-card" data-aos="fade-up" data-aos-delay="100">
+                    <span class="quality-emoji">🧠</span>
+                    <span class="quality-label">Brillante</span>
+                </div>
+                <div class="quality-card" data-aos="fade-up" data-aos-delay="200">
+                    <span class="quality-emoji">💪</span>
+                    <span class="quality-label">Guerrera</span>
+                </div>
+                <div class="quality-card" data-aos="fade-up" data-aos-delay="300">
+                    <span class="quality-emoji">😂</span>
+                    <span class="quality-label">Divertida</span>
+                </div>
+                <div class="quality-card" data-aos="fade-up" data-aos-delay="400">
+                    <span class="quality-emoji">🥰</span>
+                    <span class="quality-label">Cariñosa</span>
+                </div>
+                <div class="quality-card" data-aos="fade-up" data-aos-delay="500">
+                    <span class="quality-emoji">💻</span>
+                    <span class="quality-label">Ingeniera</span>
+                </div>
+                <div class="quality-card" data-aos="fade-up" data-aos-delay="600">
+                    <span class="quality-emoji">✨</span>
+                    <span class="quality-label">Única</span>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- SECCIÓN 5: RAZONES POR LAS QUE TE QUIERO -->
+        <section>
+            <h2 class="cursive" data-aos="fade-down" style="font-size: 2rem; color: var(--secondary); margin-bottom: 10px;">Razones por las que te quiero</h2>
+            <div class="section-divider" data-aos="fade-up" data-aos-delay="100"></div>
+            <p data-aos="fade-up" data-aos-delay="150" style="text-align: center; margin-bottom: 20px; font-size: 0.85rem; opacity: 0.7;">Toca las tarjetas para voltearlas 💖</p>
             <div class="reasons-grid" id="reasons-container">
                 <!-- Se llena por JS -->
             </div>
         </section>
 
 
-        <!-- SECCIÓN 5: DESBLOQUEABLES -->
+        <!-- SECCIÓN 6: MIS DESEOS PARA TI -->
         <section>
-            <h2 class="cursive" style="font-size: 2rem; color: var(--secondary); margin-bottom: 30px; text-align: center;">Sorpresas Diarias</h2>
-            <p style="text-align: center; margin-bottom: 20px; font-size: 0.9rem;">Una cada día antes de tu cumple</p>
-            <div class="unlock-grid" id="unlock-container">
-                <!-- Se llena por JS -->
+            <h2 class="cursive" data-aos="fade-down" style="font-size: 2rem; color: var(--secondary); margin-bottom: 10px;">Mis deseos para ti</h2>
+            <div class="section-divider" data-aos="fade-up" data-aos-delay="100"></div>
+            <div class="wishes-container">
+                <div class="wish-bubble" data-aos="fade-right" data-aos-delay="100">
+                    <span class="wish-icon">🎓</span>
+                    Que este semestre sea el mejor de todos y que la U te llene de orgullo.
+                </div>
+                <div class="wish-bubble" data-aos="fade-left" data-aos-delay="200">
+                    <span class="wish-icon">💰</span>
+                    Que te llueva la plata para el gym, para viajar y para darte todos los gustos.
+                </div>
+                <div class="wish-bubble" data-aos="fade-right" data-aos-delay="300">
+                    <span class="wish-icon">❤️</span>
+                    Que siempre te rodees de personas que te valoren tanto como yo.
+                </div>
+                <div class="wish-bubble" data-aos="fade-left" data-aos-delay="400">
+                    <span class="wish-icon">🌍</span>
+                    Que cumplas todos tus sueños, los grandes y los chiquitos.
+                </div>
+                <div class="wish-bubble" data-aos="fade-right" data-aos-delay="500">
+                    <span class="wish-icon">😊</span>
+                    Que nunca pierdas esa sonrisa que ilumina hasta los peores días.
+                </div>
+            </div>
+        </section>
+
+
+        <!-- SECCIÓN 7: PROMESAS -->
+        <section>
+            <h2 class="cursive" data-aos="fade-down" style="font-size: 2rem; color: var(--secondary); margin-bottom: 10px;">Te prometo que...</h2>
+            <div class="section-divider" data-aos="fade-up" data-aos-delay="100"></div>
+            <ul class="promises-list">
+                <li data-aos="fade-up" data-aos-delay="100">
+                    <span class="promise-icon">🐼</span>
+                    <span>Siempre voy a estar ahí cuando necesites hablar, llorar o reírte.</span>
+                </li>
+                <li data-aos="fade-up" data-aos-delay="200">
+                    <span class="promise-icon">💻</span>
+                    <span>Te ayudo con cualquier bug o trabajo de la U a cualquier hora.</span>
+                </li>
+                <li data-aos="fade-up" data-aos-delay="300">
+                    <span class="promise-icon">🎧</span>
+                    <span>Nunca me voy a cansar de mandarte memes y reels random.</span>
+                </li>
+                <li data-aos="fade-up" data-aos-delay="400">
+                    <span class="promise-icon">🫂</span>
+                    <span>Siempre voy a recordarte lo increíble que eres, mugrosita.</span>
+                </li>
+            </ul>
+        </section>
+
+
+        <!-- SECCIÓN 8: MENSAJE FINAL -->
+        <section>
+            <div data-aos="zoom-in" data-aos-duration="1500" style="text-align: center;">
+                <p style="font-size: 4rem; margin-bottom: 15px;">🎂</p>
+                <p class="big-message" style="font-size: 2.2rem;">¡Feliz cumpleaños,<br>Vivian!</p>
+                <div class="section-divider" style="margin: 20px auto;"></div>
+                <p style="font-size: 1.1rem; max-width: 320px; line-height: 1.6; opacity: 0.85;">
+                    Que este 17 de octubre sea el inicio de un año lleno de cosas hermosas. 
+                    <br><br>
+                    Te quiero mugrosita, no lo olvides nunca. 🫂💞
+                </p>
+                <p style="margin-top: 25px; font-size: 0.85rem; opacity: 0.5;">Hecho con 💖 por tu pinche panda</p>
             </div>
         </section>
 
@@ -356,12 +809,15 @@
     <!-- PANTALLA DE CELEBRACIÓN -->
     <div id="celebration-screen">
         <h1 class="cursive">¡Feliz Cumpleaños<br>Vivian!</h1>
-        <p style="color: white; font-size: 1.2rem; margin-top: 20px; max-width: 80%;">
-            ¡Llegó el gran día! Espero que tengas un cumpleaños hermoso y lleno de alegría. Te quiero mucho ❤️
+        <p style="color: white; font-size: 1.2rem; margin-top: 20px; max-width: 80%; line-height: 1.6;">
+            ¡Llegó el gran día! 🎉🎂<br>
+            Espero que tengas un cumpleaños hermoso y lleno de alegría.<br>
+            Te quiero mugrosita ❤️🫂
         </p>
     </div>
 
     <!-- LIBRERÍAS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <script>
@@ -369,36 +825,33 @@
            CONFIGURACIÓN EDITABLE
            ========================================= */
         const CONFIG = {
-            // Fecha del cumpleaños (Año, Mes (0-11), Día, Hora, Minuto)
-            // Octubre es el mes 9 porque enero es 0.
+            // Fecha del cumpleaños
             targetDate: new Date(2026, 9, 17, 0, 0, 0),
             
             // Textos para la máquina de escribir
             typewriterTexts: [
-                "Compilando sorpresas de tu pinche panda 🐼...",
-                "El Smirnoff de tamarindo nos va a matar...",
-                "¿Seguimos hablando del temblor o de otra cosa? 😌",
-                "Te quiero mugrosita 🫂💞"
+                "Preparando algo especial para ti...",
+                "Te quiero mugrosita 🫂💞",
+                "Eres increíble, no lo olvides.",
+                "¡Feliz cumpleaños, Vivian! 🎂"
             ],
 
-            // Razones (Tarjetas)
+            // Razones (Tarjetas volteables)
             reasons: [
-                "Porque tú eres el frontend perfecto para mi servidor de Express.",
-                "Porque ni un error en app.js línea 107 me impide ayudarte a montar ese CRM.",
-                "Porque nuestro chat tiene más historia que mi consola con npm start.",
-                "Por aguantar a este pinche panda hasta cuando hay temblores 'largos'."
+                "Por ser la amiga que siempre contesta, sin importar la hora.",
+                "Porque me aguantas todos mis chistes malos y aún así te ríes.",
+                "Porque eres la única persona que me dice 'pinche panda' con cariño 🐼.",
+                "Porque sin ti mi vida tendría más bugs que un Windows Vista.",
+                "Porque nuestras videollamadas nocturnas arreglan cualquier mal día.",
+                "Porque simplemente eres tú, y eso es más que suficiente. 💖"
             ],
 
-            // Desbloqueables diarios
-            unlocks: [
-                { daysLeft: 3, content: "Sorpresa 1: Un beso virtual 💋" },
-                { daysLeft: 2, content: "Sorpresa 2: 'Yooo más🥰'" },
-                { daysLeft: 1, content: "Sorpresa 3: Un recuerdo especial 💖<br><img src='./WhatsApp Chat - Vivian Arias/00002188-PHOTO-2026-09-29-15-13-38.jpg' style='width: 100%; border-radius: 10px; margin-top: 10px;'>" }
-            ],
+            // Emojis que flotan por el fondo
+            floatingEmojis: ['🌸', '🌺', '💮', '🌷', '🪷', '💐', '🌹', '✨', '💖', '🦋'],
 
             // Configuración general
             musicTitle: "Nuestra Canción",
-            maxParticles: 40 // Optimizado para móviles
+            maxParticles: 50
         };
 
         /* =========================================
@@ -417,16 +870,14 @@
         let isMusicPlaying = false;
         let isCelebration = false;
 
-        // Comprobar si es test o si ya pasó la fecha
+        // Comprobar si es test
         const urlParams = new URLSearchParams(window.location.search);
         const isTest = urlParams.get('test') === '1';
 
         // 1. Iniciar App
         btnStart.addEventListener('click', () => {
-            // Vibración corta si es posible
             if (navigator.vibrate) navigator.vibrate(50);
             
-            // Transición
             welcomeScreen.style.transform = 'translateY(-100%)';
             welcomeScreen.style.opacity = '0';
             
@@ -435,13 +886,12 @@
                 mainContent.style.display = 'block';
                 setTimeout(() => mainContent.style.opacity = '1', 50);
                 
-                // Iniciar música
                 audio.play().then(() => {
                     isMusicPlaying = true;
                     btnPlay.innerHTML = '⏸️';
                     musicPlayer.style.display = 'flex';
                 }).catch(e => {
-                    console.log("Auto-play prevenido por el navegador", e);
+                    console.log("Auto-play prevenido", e);
                     musicPlayer.style.display = 'flex';
                 });
             }, 800);
@@ -465,11 +915,13 @@
 
         // 3. Inicializar Componentes
         function initApp() {
+            if(window.AOS) AOS.init({ once: true, duration: 800 });
             renderReasons();
             startTypewriter();
             updateCountdown();
             setInterval(updateCountdown, 1000);
             initBackground();
+            initFloatingEmojis();
         }
 
         // 4. Cuenta Regresiva
@@ -493,8 +945,6 @@
             document.getElementById('cd-hours').textContent = hours.toString().padStart(2, '0');
             document.getElementById('cd-mins').textContent = minutes.toString().padStart(2, '0');
             document.getElementById('cd-secs').textContent = seconds.toString().padStart(2, '0');
-
-            updateUnlocks(days);
         }
 
         // 5. Máquina de escribir
@@ -509,7 +959,7 @@
             if (charIndex < currentText.length) {
                 twElement.textContent += currentText.charAt(charIndex);
                 charIndex++;
-                setTimeout(startTypewriter, 100);
+                setTimeout(startTypewriter, 80);
             } else {
                 setTimeout(() => {
                     twElement.textContent = '';
@@ -520,16 +970,20 @@
             }
         }
 
-
-        // 7. Renderizar Razones (Flip Cards)
+        // 6. Renderizar Razones (Flip Cards)
         function renderReasons() {
             const container = document.getElementById('reasons-container');
+            const icons = ['bi-heart-fill', 'bi-emoji-laughing-fill', 'bi-stars', 'bi-chat-heart-fill', 'bi-moon-stars-fill', 'bi-suit-diamond-fill'];
+            
             CONFIG.reasons.forEach((reason, index) => {
                 const div = document.createElement('div');
                 div.className = 'flip-card';
+                div.setAttribute('data-aos', 'fade-up');
+                div.setAttribute('data-aos-delay', (200 + index * 100).toString());
                 div.innerHTML = `
                     <div class="flip-card-inner">
                         <div class="flip-card-front">
+                            <i class="bi ${icons[index % icons.length]}"></i>
                             <h3>Razón #${index + 1}</h3>
                         </div>
                         <div class="flip-card-back">
@@ -545,31 +999,39 @@
             });
         }
 
-
-        // 9. Desbloqueables
-        function updateUnlocks(daysLeft) {
-            const container = document.getElementById('unlock-container');
-            container.innerHTML = '';
+        // 7. Emojis Flotantes de Fondo
+        function initFloatingEmojis() {
+            const container = document.getElementById('floating-emojis-container');
             
-            CONFIG.unlocks.forEach(unlock => {
-                const isUnlocked = daysLeft <= unlock.daysLeft;
-                const div = document.createElement('div');
-                div.className = `unlock-item ${isUnlocked ? 'unlocked' : ''}`;
-                div.innerHTML = `
-                    <strong>Faltan ${unlock.daysLeft} días</strong>
-                    <p style="margin-top: 5px;">${isUnlocked ? unlock.content : '🔒 Bloqueado'}</p>
-                `;
-                container.appendChild(div);
-            });
+            function createEmoji() {
+                const emoji = document.createElement('div');
+                emoji.className = 'floating-emoji';
+                emoji.textContent = CONFIG.floatingEmojis[Math.floor(Math.random() * CONFIG.floatingEmojis.length)];
+                emoji.style.left = Math.random() * 100 + 'vw';
+                emoji.style.animationDuration = (Math.random() * 6 + 6) + 's';
+                emoji.style.animationDelay = (Math.random() * 2) + 's';
+                emoji.style.fontSize = (Math.random() * 1.5 + 1) + 'rem';
+                container.appendChild(emoji);
+
+                setTimeout(() => {
+                    emoji.remove();
+                }, 14000);
+            }
+
+            // Crear emojis periódicamente
+            setInterval(createEmoji, 800);
+            // Crear algunos de inmediato
+            for (let i = 0; i < 8; i++) {
+                setTimeout(createEmoji, i * 300);
+            }
         }
 
-        // 10. Modo Celebración
+        // 8. Modo Celebración
         function triggerCelebration() {
             isCelebration = true;
             document.getElementById('celebration-screen').style.display = 'flex';
             mainContent.style.display = 'none';
             
-            // Confeti loop
             const duration = 15 * 1000;
             const animationEnd = Date.now() + duration;
             const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 300 };
@@ -591,7 +1053,7 @@
             }, 250);
         }
 
-        // 11. Fondo Animado Ligero (Canvas)
+        // 9. Fondo Animado — Pétalos de Flores
         function initBackground() {
             if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
@@ -607,31 +1069,65 @@
             window.addEventListener('resize', resize);
             resize();
 
-            class Particle {
+            const petalColors = [
+                'rgba(255, 183, 197, ',
+                'rgba(255, 218, 233, ',
+                'rgba(255, 150, 180, ',
+                'rgba(255, 200, 210, ',
+                'rgba(252, 175, 200, '
+            ];
+
+            class Petal {
                 constructor() {
                     this.x = Math.random() * width;
-                    this.y = Math.random() * height;
-                    this.size = Math.random() * 3 + 1;
-                    this.speedY = Math.random() * 0.5 + 0.1;
-                    this.alpha = Math.random() * 0.5 + 0.1;
+                    this.y = Math.random() * height - height;
+                    this.size = Math.random() * 4 + 2;
+                    this.speedY = Math.random() * 1.2 + 0.3;
+                    this.speedX = Math.random() * 0.8 - 0.4;
+                    this.angle = Math.random() * Math.PI * 2;
+                    this.spin = (Math.random() - 0.5) * 0.04;
+                    this.alpha = Math.random() * 0.4 + 0.2;
+                    this.color = petalColors[Math.floor(Math.random() * petalColors.length)];
+                    this.wobble = Math.random() * Math.PI * 2;
+                    this.wobbleSpeed = Math.random() * 0.02 + 0.01;
                 }
                 update() {
-                    this.y -= this.speedY;
-                    if (this.y < 0) {
-                        this.y = height;
+                    this.y += this.speedY;
+                    this.wobble += this.wobbleSpeed;
+                    this.x += this.speedX + Math.sin(this.wobble) * 0.3;
+                    this.angle += this.spin;
+                    if (this.y > height + 10) {
+                        this.y = -10;
                         this.x = Math.random() * width;
                     }
                 }
                 draw() {
-                    ctx.fillStyle = `rgba(255, 105, 180, ${this.alpha})`;
+                    ctx.save();
+                    ctx.translate(this.x, this.y);
+                    ctx.rotate(this.angle);
+                    ctx.fillStyle = this.color + this.alpha + ')';
                     ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    // Forma de pétalo
+                    ctx.moveTo(0, 0);
+                    ctx.bezierCurveTo(
+                        this.size, -this.size,
+                        this.size * 2, 0,
+                        0, this.size * 2
+                    );
+                    ctx.bezierCurveTo(
+                        -this.size * 2, 0,
+                        -this.size, -this.size,
+                        0, 0
+                    );
                     ctx.fill();
+                    ctx.restore();
                 }
             }
 
             for (let i = 0; i < CONFIG.maxParticles; i++) {
-                particles.push(new Particle());
+                const p = new Petal();
+                p.y = Math.random() * height;
+                particles.push(p);
             }
 
             function animate() {
