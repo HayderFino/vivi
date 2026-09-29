@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#ffb6c1">
+    <title>¡Feliz Cumpleaños Vivian!</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Pacifico&display=swap" rel="stylesheet">
+    
+    <style>
+        /* CONFIGURACIÓN DE ESTILOS - TEMA: CUTE Y PASTEL */
+        :root {
+            --bg-color: #fff0f5;
+            --primary: #ffb6c1;
+            --secondary: #ff69b4;
+            --text-main: #5c4044;
+            --text-light: #ffffff;
+            --card-bg: rgba(255, 255, 255, 0.8);
+            --safe-top: env(safe-area-inset-top);
+            --safe-bottom: env(safe-area-inset-bottom);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+            overscroll-behavior-y: none;
+        }
+
+        /* TIPOGRAFÍA */
+        h1, h2, h3, .cursive {
+            font-family: 'Pacifico', cursive;
+            font-weight: normal;
+        }
+
+        /* PANTALLA DE BIENVENIDA */
+        #welcome-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100dvh;
+            background: linear-gradient(135deg, #ffb6c1, #ffc0cb);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        
+        #welcome-screen h1 {
+            color: var(--text-light);
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .btn-large {
+            background-color: var(--text-light);
+            color: var(--secondary);
+            border: none;
+            border-radius: 30px;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            font-family: 'Fredoka', sans-serif;
+            box-shadow: 0 4px 15px rgba(255, 105, 180, 0.3);
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            min-height: 48px; /* Touch target size */
+            min-width: 48px;
+        }
+        
+        .btn-large:active {
+            transform: scale(0.95);
+        }
+
+        /* CONTENEDOR PRINCIPAL */
+        #main-content {
+            display: none;
+            opacity: 0;
+            transition: opacity 1s ease;
+            padding-bottom: calc(80px + var(--safe-bottom));
+        }
+
+        section {
+            min-height: 100dvh;
+            padding: calc(40px + var(--safe-top)) 20px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* CUENTA REGRESIVA */
+        .countdown-container {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .time-box {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 15px;
+            min-width: 70px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            backdrop-filter: blur(5px);
+        }
+        .time-num {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--secondary);
+        }
+        .time-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+
+        /* MÁQUINA DE ESCRIBIR */
+        #typewriter-text {
+            font-size: 1.5rem;
+            text-align: center;
+            min-height: 80px;
+            margin: 20px 0;
+        }
+
+        /* GALERÍA HORIZONTAL */
+        .gallery-wrapper {
+            width: 100vw;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            display: flex;
+            padding: 20px;
+            gap: 20px;
+            -webkit-overflow-scrolling: touch;
+        }
+        .gallery-wrapper::-webkit-scrollbar { display: none; }
+        .gallery-item {
+            scroll-snap-align: center;
+            min-width: 250px;
+            height: 350px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* TARJETAS VOLTEABLES */
+        .reasons-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            width: 100%;
+            max-width: 400px;
+        }
+        .flip-card {
+            background-color: transparent;
+            width: 100%;
+            height: 120px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .flip-card-front {
+            background-color: var(--primary);
+            color: var(--text-light);
+            font-size: 1.2rem;
+        }
+        .flip-card-back {
+            background-color: var(--card-bg);
+            color: var(--text-main);
+            transform: rotateY(180deg);
+        }
+
+        /* ELEMENTOS DESBLOQUEABLES */
+        .unlock-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+        }
+        .unlock-item {
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+            opacity: 0.5;
+            position: relative;
+        }
+        .unlock-item.unlocked {
+            opacity: 1;
+            background: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        /* REPRODUCTOR FLOTANTE */
+        #music-player {
+            position: fixed;
+            bottom: calc(20px + var(--safe-bottom));
+            right: 20px;
+            background: white;
+            border-radius: 30px;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            z-index: 50;
+        }
+        .music-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--secondary);
+            min-width: 48px;
+            min-height: 48px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* PANTALLA DE CELEBRACIÓN */
+        #celebration-screen {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100dvh;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+            z-index: 200;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            text-align: center;
+        }
+        #celebration-screen h1 {
+            font-size: 4rem;
+            color: white;
+            text-shadow: 0 0 20px rgba(255,255,255,0.8);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* LÍNEA DE TIEMPO */
+        .timeline {
+            position: relative;
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            background-color: var(--primary);
+            top: 0;
+            bottom: 0;
+            left: 20px;
+            border-radius: 2px;
+        }
+        .timeline-item {
+            padding: 10px 20px 10px 50px;
+            position: relative;
+            background-color: inherit;
+            width: 100%;
+        }
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            right: auto;
+            left: 14px;
+            background-color: white;
+            border: 4px solid var(--secondary);
+            top: 15px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+        .timeline-content {
+            padding: 15px;
+            background-color: var(--card-bg);
+            position: relative;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        /* FONDO ANIMADO */
+        #background-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- PANTALLA DE BIENVENIDA -->
+    <div id="welcome-screen">
+        <h1>¡Hola, Vivian!</h1>
+        <p style="margin-bottom: 30px; color: white; font-size: 1.1rem; text-align: center; padding: 0 20px;">Tengo una sorpresa preparada para ti...</p>
+        <button class="btn-large" id="btn-start" aria-label="Abrir sorpresa">Toca para abrir</button>
+    </div>
+
+    <!-- FONDO ANIMADO -->
+    <canvas id="background-canvas"></canvas>
+
+    <!-- REPRODUCTOR DE MÚSICA -->
+    <div id="music-player" style="display: none;">
+        <button class="music-btn" id="btn-play" aria-label="Reproducir música">🎵</button>
+        <span style="font-size: 0.9rem; font-weight: 600;" id="track-name">Cargando...</span>
+    </div>
+
+    <!-- AUDIO ELEMENT -->
+    <!-- Reemplaza el src con la URL de tu canción -->
+    <audio id="bg-audio" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <div id="main-content">
+        
+        <!-- SECCIÓN 1: CUENTA REGRESIVA -->
+        <section id="sec-countdown">
+            <h2 class="cursive" style="font-size: 2.5rem; color: var(--secondary);">Faltan...</h2>
+            <div class="countdown-container">
+                <div class="time-box">
+                    <div class="time-num" id="cd-days">00</div>
+                    <div class="time-label">Días</div>
+                </div>
+                <div class="time-box">
+                    <div class="time-num" id="cd-hours">00</div>
+                    <div class="time-label">Hrs</div>
+                </div>
+                <div class="time-box">
+                    <div class="time-num" id="cd-mins">00</div>
+                    <div class="time-label">Min</div>
+                </div>
+                <div class="time-box">
+                    <div class="time-num" id="cd-secs">00</div>
+                    <div class="time-label">Seg</div>
+                </div>
+            </div>
+            <div id="typewriter-text" style="margin-top: 40px; color: var(--text-main);"></div>
+        </section>
+
+        <!-- SECCIÓN 2: LÍNEA DE TIEMPO -->
+        <section style="background-color: rgba(255, 255, 255, 0.4);">
+            <h2 class="cursive" style="font-size: 2rem; color: var(--secondary); margin-bottom: 30px;">Nuestra Historia</h2>
+            <div class="timeline" id="timeline-container">
+                <!-- Se llena por JS -->
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: RAZONES -->
+        <section>
+            <h2 class="cursive" style="font-size: 2rem; color: var(--secondary); margin-bottom: 30px; text-align: center;">Razones por las que te quiero</h2>
+            <p style="text-align: center; margin-bottom: 20px; font-size: 0.9rem;">(Toca las tarjetas para voltearlas)</p>
+            <div class="reasons-grid" id="reasons-container">
+                <!-- Se llena por JS -->
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: GALERÍA -->
+        <section style="background-color: rgba(255, 255, 255, 0.4); padding-left: 0; padding-right: 0;">
+            <h2 class="cursive" style="font-size: 2rem; color: var(--secondary); margin-bottom: 30px; text-align: center;">Momentos Especiales</h2>
+            <div class="gallery-wrapper" id="gallery-container">
+                <!-- Se llena por JS -->
+            </div>
+        </section>
+
+        <!-- SECCIÓN 5: DESBLOQUEABLES -->
+        <section>
+            <h2 class="cursive" style="font-size: 2rem; color: var(--secondary); margin-bottom: 30px; text-align: center;">Sorpresas Diarias</h2>
+            <p style="text-align: center; margin-bottom: 20px; font-size: 0.9rem;">Una cada día antes de tu cumple</p>
+            <div class="unlock-grid" id="unlock-container">
+                <!-- Se llena por JS -->
+            </div>
+        </section>
+
+    </div>
+
+    <!-- PANTALLA DE CELEBRACIÓN -->
+    <div id="celebration-screen">
+        <h1 class="cursive">¡Feliz Cumpleaños<br>Vivian!</h1>
+        <p style="color: white; font-size: 1.2rem; margin-top: 20px; max-width: 80%;">
+            ¡Llegó el gran día! Espero que tengas un cumpleaños hermoso y lleno de alegría. Te quiero mucho ❤️
+        </p>
+    </div>
+
+    <!-- LIBRERÍAS -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        /* =========================================
+           CONFIGURACIÓN EDITABLE
+           ========================================= */
+        const CONFIG = {
+            // Fecha del cumpleaños (Año, Mes (0-11), Día, Hora, Minuto)
+            // Octubre es el mes 9 porque enero es 0.
+            targetDate: new Date(2026, 9, 17, 0, 0, 0),
+            
+            // Textos para la máquina de escribir
+            typewriterTexts: [
+                "Ya casi es el gran día...",
+                "Estoy preparando algo especial...",
+                "Me encanta verte sonreír.",
+                "Cuenta los segundos..."
+            ],
+
+            // Línea de tiempo
+            timeline: [
+                { date: "Enero 2023", text: "El día que nos conocimos." },
+                { date: "Marzo 2024", text: "Ese viaje inolvidable a la playa." },
+                { date: "Diciembre 2024", text: "Nuestra primera Navidad." },
+                { date: "Hoy", text: "Esperando celebrar otro año más contigo." }
+            ],
+
+            // Razones (Tarjetas)
+            reasons: [
+                "Por tu hermosa sonrisa.",
+                "Porque siempre sabes escuchar.",
+                "Por cómo iluminas cualquier lugar.",
+                "Por ser incondicional."
+            ],
+
+            // Galería de fotos (URLs) - Reemplaza con tus fotos (ej. ./fotos/foto1.jpg)
+            photos: [
+                "https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=400&q=80",
+                "https://images.unsplash.com/photo-1511895426328-dc8714191300?w=400&q=80",
+                "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=400&q=80"
+            ],
+
+            // Desbloqueables diarios
+            unlocks: [
+                { daysLeft: 3, content: "Sorpresa 1: Un beso virtual 💋" },
+                { daysLeft: 2, content: "Sorpresa 2: Una canción secreta 🎧" },
+                { daysLeft: 1, content: "Sorpresa 3: Falta solo un día! 🎉" }
+            ],
+
+            // Configuración general
+            musicTitle: "Nuestra Canción",
+            maxParticles: 40 // Optimizado para móviles
+        };
+
+        /* =========================================
+           LÓGICA DE LA APLICACIÓN
+           ========================================= */
+        
+        // Elementos del DOM
+        const welcomeScreen = document.getElementById('welcome-screen');
+        const mainContent = document.getElementById('main-content');
+        const btnStart = document.getElementById('btn-start');
+        const audio = document.getElementById('bg-audio');
+        const btnPlay = document.getElementById('btn-play');
+        const trackName = document.getElementById('track-name');
+        const musicPlayer = document.getElementById('music-player');
+        
+        let isMusicPlaying = false;
+        let isCelebration = false;
+
+        // Comprobar si es test o si ya pasó la fecha
+        const urlParams = new URLSearchParams(window.location.search);
+        const isTest = urlParams.get('test') === '1';
+
+        // 1. Iniciar App
+        btnStart.addEventListener('click', () => {
+            // Vibración corta si es posible
+            if (navigator.vibrate) navigator.vibrate(50);
+            
+            // Transición
+            welcomeScreen.style.transform = 'translateY(-100%)';
+            welcomeScreen.style.opacity = '0';
+            
+            setTimeout(() => {
+                welcomeScreen.style.display = 'none';
+                mainContent.style.display = 'block';
+                setTimeout(() => mainContent.style.opacity = '1', 50);
+                
+                // Iniciar música
+                audio.play().then(() => {
+                    isMusicPlaying = true;
+                    btnPlay.innerHTML = '⏸️';
+                    musicPlayer.style.display = 'flex';
+                }).catch(e => {
+                    console.log("Auto-play prevenido por el navegador", e);
+                    musicPlayer.style.display = 'flex';
+                });
+            }, 800);
+
+            initApp();
+        });
+
+        // 2. Control de Música
+        trackName.textContent = CONFIG.musicTitle;
+        btnPlay.addEventListener('click', () => {
+            if (navigator.vibrate) navigator.vibrate(30);
+            if (isMusicPlaying) {
+                audio.pause();
+                btnPlay.innerHTML = '▶️';
+            } else {
+                audio.play();
+                btnPlay.innerHTML = '⏸️';
+            }
+            isMusicPlaying = !isMusicPlaying;
+        });
+
+        // 3. Inicializar Componentes
+        function initApp() {
+            renderTimeline();
+            renderReasons();
+            renderGallery();
+            startTypewriter();
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+            initBackground();
+        }
+
+        // 4. Cuenta Regresiva
+        function updateCountdown() {
+            if (isCelebration) return;
+
+            const now = new Date().getTime();
+            const distance = CONFIG.targetDate.getTime() - now;
+
+            if (distance <= 0 || isTest) {
+                triggerCelebration();
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('cd-days').textContent = days.toString().padStart(2, '0');
+            document.getElementById('cd-hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('cd-mins').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('cd-secs').textContent = seconds.toString().padStart(2, '0');
+
+            updateUnlocks(days);
+        }
+
+        // 5. Máquina de escribir
+        let twIndex = 0;
+        let charIndex = 0;
+        const twElement = document.getElementById('typewriter-text');
+        
+        function startTypewriter() {
+            if (isCelebration) return;
+            const currentText = CONFIG.typewriterTexts[twIndex];
+            
+            if (charIndex < currentText.length) {
+                twElement.textContent += currentText.charAt(charIndex);
+                charIndex++;
+                setTimeout(startTypewriter, 100);
+            } else {
+                setTimeout(() => {
+                    twElement.textContent = '';
+                    charIndex = 0;
+                    twIndex = (twIndex + 1) % CONFIG.typewriterTexts.length;
+                    startTypewriter();
+                }, 3000);
+            }
+        }
+
+        // 6. Renderizar Timeline
+        function renderTimeline() {
+            const container = document.getElementById('timeline-container');
+            CONFIG.timeline.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'timeline-item';
+                div.innerHTML = `
+                    <div class="timeline-content">
+                        <strong style="color: var(--secondary); display: block; margin-bottom: 5px;">${item.date}</strong>
+                        <p>${item.text}</p>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        // 7. Renderizar Razones (Flip Cards)
+        function renderReasons() {
+            const container = document.getElementById('reasons-container');
+            CONFIG.reasons.forEach((reason, index) => {
+                const div = document.createElement('div');
+                div.className = 'flip-card';
+                div.innerHTML = `
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <h3>Razón #${index + 1}</h3>
+                        </div>
+                        <div class="flip-card-back">
+                            <p>${reason}</p>
+                        </div>
+                    </div>
+                `;
+                div.addEventListener('click', () => {
+                    if (navigator.vibrate) navigator.vibrate(30);
+                    div.classList.toggle('flipped');
+                });
+                container.appendChild(div);
+            });
+        }
+
+        // 8. Renderizar Galería
+        function renderGallery() {
+            const container = document.getElementById('gallery-container');
+            CONFIG.photos.forEach(photoUrl => {
+                const div = document.createElement('div');
+                div.className = 'gallery-item';
+                div.innerHTML = `<img src="${photoUrl}" alt="Momento especial" loading="lazy">`;
+                container.appendChild(div);
+            });
+        }
+
+        // 9. Desbloqueables
+        function updateUnlocks(daysLeft) {
+            const container = document.getElementById('unlock-container');
+            container.innerHTML = '';
+            
+            CONFIG.unlocks.forEach(unlock => {
+                const isUnlocked = daysLeft <= unlock.daysLeft;
+                const div = document.createElement('div');
+                div.className = `unlock-item ${isUnlocked ? 'unlocked' : ''}`;
+                div.innerHTML = `
+                    <strong>Faltan ${unlock.daysLeft} días</strong>
+                    <p style="margin-top: 5px;">${isUnlocked ? unlock.content : '🔒 Bloqueado'}</p>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        // 10. Modo Celebración
+        function triggerCelebration() {
+            isCelebration = true;
+            document.getElementById('celebration-screen').style.display = 'flex';
+            mainContent.style.display = 'none';
+            
+            // Confeti loop
+            const duration = 15 * 1000;
+            const animationEnd = Date.now() + duration;
+            const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 300 };
+
+            function randomInRange(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+
+            const interval = setInterval(function() {
+                const timeLeft = animationEnd - Date.now();
+
+                if (timeLeft <= 0) {
+                    return clearInterval(interval);
+                }
+
+                const particleCount = 20 * (timeLeft / duration);
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+            }, 250);
+        }
+
+        // 11. Fondo Animado Ligero (Canvas)
+        function initBackground() {
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+            const canvas = document.getElementById('background-canvas');
+            const ctx = canvas.getContext('2d');
+            let width, height;
+            let particles = [];
+
+            function resize() {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resize);
+            resize();
+
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * width;
+                    this.y = Math.random() * height;
+                    this.size = Math.random() * 3 + 1;
+                    this.speedY = Math.random() * 0.5 + 0.1;
+                    this.alpha = Math.random() * 0.5 + 0.1;
+                }
+                update() {
+                    this.y -= this.speedY;
+                    if (this.y < 0) {
+                        this.y = height;
+                        this.x = Math.random() * width;
+                    }
+                }
+                draw() {
+                    ctx.fillStyle = `rgba(255, 105, 180, ${this.alpha})`;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+
+            for (let i = 0; i < CONFIG.maxParticles; i++) {
+                particles.push(new Particle());
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, width, height);
+                particles.forEach(p => {
+                    p.update();
+                    p.draw();
+                });
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+    </script>
+</body>
+</html>
